@@ -249,11 +249,7 @@ compile_latex() {
     # We call it via `nix run` to ensure we use the version from the texMini flake.
     (
       cd "$INPUT_FILE_DIR"
-      # Per user instruction, we now use `nix run` to invoke texMini.
-      # We use the `latexmk` app from texMini to clean the directory first.
-      nix run github:composable-science/texMini#latexmk -- -C "$input_file"
-      # Then we compile.
-      nix run github:composable-science/texMini -- "$input_file"
+      nix run github:composable-science/texMini -- $input_file
     )
     
     if [[ $? -ne 0 ]]; then
@@ -280,11 +276,8 @@ compile_latex() {
 generate_dashboard() {
     log_info "Generating CSF dashboard..."
     
-    # Check if we're in a CSF project
-    if [[ ! -f "$PROJECT_ROOT/composable.toml" ]]; then
-        log_error "No composable.toml found in the project root: $PROJECT_ROOT"
-        exit 1
-    fi
+    # No longer require composable.toml for dashboard generation
+    #log_info "Composable.toml check skipped (no longer required)."
     
     # Use the dashboard generator from the flake, running from the project root
     if command -v nix >/dev/null; then
